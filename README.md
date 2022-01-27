@@ -1,1 +1,1 @@
-# RISC-V_DE10-Nano
+# Implementation of a Linux-ready RISC-V System (RocketChip in FPGA (DE10-Nano) 
