@@ -1,0 +1,4 @@
+platform_setup.tcl
+filelist.txt
+DE10_Nano_golden_top.v
+DE10_Nano_golden_top.sdc

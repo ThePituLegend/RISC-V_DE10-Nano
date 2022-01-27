@@ -1,0 +1,2 @@
+DE10_Nano_golden_top.qp_info
+DE10_Nano_golden_top.qar

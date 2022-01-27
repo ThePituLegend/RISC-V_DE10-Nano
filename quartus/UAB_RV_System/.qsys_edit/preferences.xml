@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<preferences>
+ <debug showDebugMenu="0" />
+ <systemtable filter="All Interfaces">
+  <columns>
+   <connections preferredWidth="143" />
+   <irq preferredWidth="34" />
+   <export preferredWidth="85" />
+   <description preferredWidth="82" visible="0" />
+   <inputclock visible="0" />
+  </columns>
+ </systemtable>
+ <library
+   expandedCategories="Library/Basic Functions/Simulation; Debug and Verification/Simulation,Library/Basic Functions,Library/Basic Functions/Simulation; Debug and Verification,Library/Basic Functions/Bridges and Adaptors,Library/Basic Functions/Bridges and Adaptors/Reset,Library,Project" />
+ <window width="1920" height="1048" x="0" y="32" />
+ <generation path="_PROJECT_NAME_" />
+</preferences>

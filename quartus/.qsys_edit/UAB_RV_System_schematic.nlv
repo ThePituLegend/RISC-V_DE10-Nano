@@ -1,0 +1,78 @@
+# # File gsaved with Nlview version 6.3.8  2013-12-19 bk=1.2992 VDI=34 GEI=35
+# 
+preplace inst UAB_RV_System.ddr3.hps.l3regs -pg 1
+preplace inst UAB_RV_System.ddr3.hps.qspi -pg 1
+preplace inst UAB_RV_System.ddr3.hps.timer -pg 1
+preplace inst UAB_RV_System.ddr3.hps.dcan0 -pg 1
+preplace inst UAB_RV_System.ddr3.hps.hps_io -pg 1
+preplace inst UAB_RV_System.ddr3.hps -pg 1
+preplace inst UAB_RV_System -pg 1 -lvl 1 -y 40 -regy -20
+preplace inst UAB_RV_System.ddr3.hps_reset_manager_0 -pg 1
+preplace inst UAB_RV_System.ddr3.hps.axi_ocram -pg 1
+preplace inst UAB_RV_System.ddr3.hps.dcan1 -pg 1
+preplace inst UAB_RV_System.ddr3.hps.spim0 -pg 1
+preplace inst UAB_RV_System.ddr3.hps.wd_timer0 -pg 1
+preplace inst UAB_RV_System.ddr3.hps.uart0 -pg 1
+preplace inst UAB_RV_System.ddr3.hps.sysmgr -pg 1
+preplace inst UAB_RV_System.ddr3.hps.spim1 -pg 1
+preplace inst UAB_RV_System.ddr3.hps.i2c0 -pg 1
+preplace inst UAB_RV_System.ddr3.hps.wd_timer1 -pg 1
+preplace inst UAB_RV_System.ddr3.hps.uart1 -pg 1
+preplace inst UAB_RV_System.ddr3.hps.arm_gic_0 -pg 1
+preplace inst UAB_RV_System.ddr3.hps.f2s_sdram_ref_clk -pg 1
+preplace inst UAB_RV_System.ddr3.hps.f2s_periph_ref_clk -pg 1
+preplace inst UAB_RV_System.ddr3.hps.scu -pg 1
+preplace inst UAB_RV_System.ddr3.hps.sdrctl -pg 1
+preplace inst UAB_RV_System.ddr3.hps.i2c1 -pg 1
+preplace inst UAB_RV_System.ddr3.hps.clkmgr -pg 1
+preplace inst UAB_RV_System.ddr3.hps.clk_0 -pg 1
+preplace inst UAB_RV_System.ddr3.address_span_extender_0 -pg 1
+preplace inst UAB_RV_System.pio_0 -pg 1 -lvl 10 -y 30
+preplace inst UAB_RV_System.ddr3.hps.i2c2 -pg 1
+preplace inst UAB_RV_System.ddr3.clock_bridge_0 -pg 1
+preplace inst UAB_RV_System.ddr3.hps.i2c3 -pg 1
+preplace inst UAB_RV_System.ddr3.hps.timer0 -pg 1
+preplace inst UAB_RV_System.ddr3.hps.sdmmc -pg 1
+preplace inst UAB_RV_System.ddr3.hps.gpio0 -pg 1
+preplace inst UAB_RV_System.ddr3.hps.timer1 -pg 1
+preplace inst UAB_RV_System.ddr3.hps.dma -pg 1
+preplace inst UAB_RV_System.ddr3.hps.axi_sdram -pg 1
+preplace inst UAB_RV_System.ddr3.hps.nand0 -pg 1
+preplace inst UAB_RV_System.ddr3.hps.gpio1 -pg 1
+preplace inst UAB_RV_System.ddr3.hps.timer2 -pg 1
+preplace inst UAB_RV_System.UABChip_0 -pg 1 -lvl 5 -y 80
+preplace inst UAB_RV_System.ddr3.hps.gpio2 -pg 1
+preplace inst UAB_RV_System.ddr3.hps.timer3 -pg 1
+preplace inst UAB_RV_System.ddr3.hps.fpgamgr -pg 1
+preplace inst UAB_RV_System.ddr3.hps.arm_a9_0 -pg 1
+preplace inst UAB_RV_System.ddr3.hps.fpga_interfaces -pg 1
+preplace inst UAB_RV_System.reset_bridge -pg 1 -lvl 8 -y 250
+preplace inst UAB_RV_System.ddr3.hps.gmac0 -pg 1
+preplace inst UAB_RV_System.ddr3.hps.L2 -pg 1
+preplace inst UAB_RV_System.ddr3.hps.arm_a9_1 -pg 1
+preplace inst UAB_RV_System.ddr3.hps.bridges -pg 1
+preplace inst UAB_RV_System.ddr3.hps.hps_io.border -pg 1
+preplace inst UAB_RV_System.ddr3 -pg 1 -lvl 6 -y 80
+preplace inst UAB_RV_System.onchip_memory -pg 1 -lvl 10 -y 130
+preplace inst UAB_RV_System.mem_pll -pg 1 -lvl 1 -y 120
+preplace inst UAB_RV_System.ddr3.hps.gmac1 -pg 1
+preplace inst UAB_RV_System.ddr3.hps.usb0 -pg 1
+preplace inst UAB_RV_System.ddr3.hps.rstmgr -pg 1
+preplace inst UAB_RV_System.ddr3.hps.eosc1 -pg 1
+preplace inst UAB_RV_System.ddr3.clk_50 -pg 1
+preplace inst UAB_RV_System.ddr3.hps.usb1 -pg 1
+preplace inst UAB_RV_System.ddr3.hps.eosc2 -pg 1
+preplace inst UAB_RV_System.clk -pg 1 -lvl 7 -y 150
+preplace netloc POINT_TO_POINT<net_container>UAB_RV_System</net_container>(MASTER)ddr3.h2f_reset,(SLAVE)clk.clk_in_reset) 1 6 1 1630
+preplace netloc POINT_TO_POINT<net_container>UAB_RV_System</net_container>(SLAVE)ddr3.hps_f2h_sdram0_clock,(MASTER)mem_pll.outclk0) 1 1 5 NJ 130 NJ 130 NJ 130 NJ 170 1320
+preplace netloc FAN_OUT<net_container>UAB_RV_System</net_container>(SLAVE)mem_pll.refclk,(SLAVE)reset_bridge.clk,(SLAVE)ddr3.clk,(SLAVE)pio_0.clk,(SLAVE)onchip_memory.clk1,(SLAVE)UABChip_0.clock,(MASTER)clk.clk) 1 0 10 120 110 NJ 110 NJ 110 NJ 110 960 70 1340 280 NJ 220 2010 100 NJ 100 2200
+preplace netloc EXPORT<net_container>UAB_RV_System</net_container>(SLAVE)UAB_RV_System.clk,(SLAVE)clk.clk_in) 1 0 7 NJ 230 NJ 230 NJ 230 NJ 230 NJ 240 NJ 260 NJ
+preplace netloc POINT_TO_POINT<net_container>UAB_RV_System</net_container>(MASTER)UABChip_0.axi4_mem_master,(SLAVE)ddr3.hps_f2h_sdram0_data) 1 5 1 1280
+preplace netloc EXPORT<net_container>UAB_RV_System</net_container>(SLAVE)UAB_RV_System.leds,(SLAVE)pio_0.external_connection) 1 0 10 NJ 210 NJ 210 NJ 210 NJ 210 NJ 220 NJ 220 NJ 120 NJ 60 NJ 60 NJ
+preplace netloc POINT_TO_POINT<net_container>UAB_RV_System</net_container>(SLAVE)UABChip_0.reset,(MASTER)reset_bridge.out_reset) 1 4 5 980 260 NJ 300 NJ 240 NJ 240 2160
+preplace netloc EXPORT<net_container>UAB_RV_System</net_container>(SLAVE)ddr3.memory,(SLAVE)UAB_RV_System.memory) 1 0 6 NJ 90 NJ 90 NJ 90 NJ 90 NJ 150 NJ
+preplace netloc FAN_OUT<net_container>UAB_RV_System</net_container>(SLAVE)onchip_memory.reset1,(SLAVE)pio_0.reset,(MASTER)clk.clk_reset,(SLAVE)mem_pll.reset) 1 0 10 120 190 NJ 190 NJ 190 NJ 190 NJ 200 NJ 200 NJ 100 1990 120 NJ 120 2220
+preplace netloc EXPORT<net_container>UAB_RV_System</net_container>(SLAVE)UAB_RV_System.uabchip_reset,(SLAVE)reset_bridge.in_reset) 1 0 8 NJ 280 NJ 280 NJ 280 NJ 280 NJ 280 NJ 320 NJ 280 NJ
+preplace netloc FAN_OUT<net_container>UAB_RV_System</net_container>(SLAVE)onchip_memory.s1,(MASTER)UABChip_0.axi4_mmio_master,(SLAVE)pio_0.s1) 1 5 5 1300 240 NJ 140 NJ 140 NJ 140 2240
+levelinfo -pg 1 0 90 2440
+levelinfo -hier UAB_RV_System 100 150 490 680 900 1070 1490 1800 2040 2180 2280 2430
