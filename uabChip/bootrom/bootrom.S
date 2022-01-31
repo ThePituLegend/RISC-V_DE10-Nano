@@ -1,0 +1,27 @@
+#define DDR_BASE  0x80000000
+#define BRAM_BASE 0x60010000
+#define LED_BASE  0x70000000
+//#define UART_BASE 0x60000000
+//#define SPI_BASE  0x60020000
+
+.section .text.start, "ax", @progbits
+.globl _start
+_start:
+  csrwi 0x7c1, 0 // disable chicken bits
+  li s0, DDR_BASE
+  csrr a0, mhartid
+  jr s0
+
+.section .text.hang, "ax", @progbits
+.globl _hang
+_hang:
+  csrwi 0x7c1, 0 // disable chicken bits
+  csrr a0, mhartid
+
+  li s0, BRAM_BASE
+  jr s0
+
+.L1:
+  j .L1 # Shouldn't be necessary, but just in case...
+
+# after poweron, the PC will be set to .text.hang(@0x10040) instead of _start
