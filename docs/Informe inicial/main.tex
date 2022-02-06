@@ -1,0 +1,165 @@
+\documentclass{article}
+\usepackage[catalan]{babel}
+\usepackage[a4paper, total={6.5in, 9.5in}]{geometry}
+\usepackage{multirow}
+\usepackage{graphicx}
+\usepackage[backend=biber, style=numeric,sorting=nty]{biblatex}
+
+\addbibresource{bibliography.bib}
+
+\begin{document}
+
+\nocite{*}
+
+\title{\textbf{Implementació d'un Sistema RISC-V en \textit{FPGA} amb suport per \textit{Linux}} \\
+Informe inicial}
+\author{Oscar Lostes Cazorla}
+\date{Octubre 2021}
+
+\clearpage\maketitle
+\thispagestyle{empty}
+
+\newpage
+
+\section{Context i problemàtica a resoldre} 
+
+RISC-V (RV, a partir d'ara) és un conjunt d'estàndards d'arquitectura de processadors, de naturalesa oberta i lliure, en contraposició amb arquitectures privatives com poden ser x86 o ARM.\\
+
+Al llarg dels anys, s'han desenvolupat diverses implementacions de RV, principalment en entorns universitaris (com la universitat ETH de Zürich o Berkeley), tot i que també hi ha iniciatives comercials (com SiFive o Andes).\\
+
+Si bé l'ecosistema RV és robust i prou madur, alhora presenta un problema d'usabilitat important si pretén guanyar adeptes més enllà de les esferes acadèmiques (on actualment l'arquitectura ja va tenint un pes important): els sistemes operatius.\\
+
+Actualment, la majoria de sistemes implementats amb processadors RV cauen en tres categories principals:
+
+\begin{itemize}
+\item \textbf{Sistemes \textit{baremetal}:} software corrent directament sobre el processador, sense sistema operatiu, i compilat de forma creuada en una plataforma tradicional.
+
+Aquests acostumen a ser els usos més acadèmics de RV, de cara a demostrar el seu funcionament. Però aquesta forma d'ús és poc \textit{user friendly}.
+
+\item \textbf{Sistemes encastats:} plaques amb SO de baix impacte (estil Zephyr o FreeRTOS) orientats a aplicacions encastades.
+
+Si bé aquesta configuració és molt més versàtil que la \textit{baremetal}, els SO encastats són bastant limitats i orientats a usos més industrials.
+
+\item \textbf{Plaques privatives:} la llicència de l'estàndard RV permet un ús comercial d'aquest. Aquest factor ha fet aparèixer en el mercat alguns productes amb RV, i amb capacitat d'executar \textit{Linux} de forma relativament completa i fàcil.
+
+Si bé el fet d'emprar \textit{Linux} salva l'objecció inicial que hem presentat sobre usabilitat, aquestes plaques són normalment costoses i per tant trenquen aquest avantatge.
+\end{itemize}
+
+\section{Plantejament del TFG}
+
+Partint del problema presentat, s'estableix el següent objectiu de resolució: \textbf{implementar un sistema RISC-V sobre una \textit{FPGA}}, i donar-li una capacitat real mitjançant l'execució d'un \textbf{sistema operatiu \textit{GNU/Linux}}.\\
+
+Dins d'aquest enunciat inicial, s'acoten els següents conceptes inicials, que s'haurien d'intentar mantenir dins del possible:
+
+\begin{itemize}
+\item S'opta per emprar \textit{softcores} (és a dir, processadors RV que no es fabriquen \textit{ad-hoc}) sintetitzats en \textit{FPGA}.
+
+L'ús d'una \textit{FPGA} en aquest cas permet fer proves i prototipat de forma àgil sense haver de comprar o fabricar múltiples plaques concretes.
+
+\item Per qüestions logístiques, es prefereixen plaques Altera/Terasic amb \textit{FPGA} Cyclone d'Intel.
+
+\item L'objectiu del treball no és construir cap dels components individuals que conformen el sistema descrit, sinó integrar-los per a complir l'objectiu desitjat.
+
+Això significa que aquest treball \textbf{no} consisteix a dissenyar un processador RV o un SO \textit{Linux}.
+
+Ara bé, aquest fet no impedeix que, a falta de components ja construïts que serveixin, es pugui modificar o refer material ja existent.
+
+\item Per tal d'acostar-se el màxim possible a l'usuari, l'objectiu és poder executar un gestor de finestres i entorn d'escriptori, i poder utilitzar-lo directament a través de teclat/ratolí i sortida de vídeo disponible a la \textit{FPGA} emprada.
+
+Si no es pogués assolir, també serien acceptables entorns textuals o, com a últim recurs, connexions a terminal mitjançant el port sèrie.
+
+\end{itemize}
+
+\section{Estat actual}
+
+El treball es troba actualment en una fase inicial d'investigació, per determinar les tecnologies més adequades a emprar. En concret, s'està buscant informació sobre:
+
+\begin{itemize}
+\item Requeriments del \textit{Kernel} de \textit{Linux} sobre RV i distribucions compatibles.
+\item \textit{Softcores} que suportin \textit{Linux} i \textit{FPGA}s on s'hagin implementat.
+\end{itemize}
+
+Parale\lgem ament, es disposa d'una placa Terasic DE0 (amb \textit{FPGA} Intel Cyclone III), candidata a ser el \textit{host} del projecte. Per tant, i també com a pràctica addicional, s'estan investigant i testejant les següents qüestions:
+
+\begin{itemize}
+\item Mostra d'imatge per \textit{VGA}.
+\item Càrrega de dades per SD. \textit{(Pendent actualment)}
+\item Interacció amb PS/2. \textit{(Pendent actualment)}
+\end{itemize}
+
+\subsection{Requeriments del \textit{Kernel} de \textit{Linux} sobre RV i distribucions compatibles}
+
+Es conclou que, el suport estàndard de \textit{Linux} per a RV és de 64 bits (perquè, en general, \textit{Linux} ja té bastant abandonat els 32 bits).\\
+
+D'altra banda, \textit{Linux} requereix una sèrie de capacitats mínimes del processador.
+A RV, aquestes capacitats es materialitzen en diferents extensions de l'arquitectura base (l'arquitectura base només suporta manipulació d'enters).
+En aquest cas, \textit{Linux} requereix l'extensió de propòsit general (extensió G), que comprèn un conjunt d'altres extensions (multiplicació/divisió d'enters, aritmètica de punt flotant de simple i doble precisió, i operacions atòmiques, principalment).
+També se suporta, en alguns casos, l'extensió per instruccions comprimides (extensió C).\\
+
+Seguint la nomenclatura de RV, això implica que un processador compatible amb \textit{Linux} ha de ser un processador \textbf{RV64GC}.\\
+
+El següent pas és identificar quines distribucions (orientades a usuari, i no d'ús industrial) són compatibles amb RV. A continuació, es mostren les més importants (tot i haver-hi d'altres):
+
+\begin{itemize}
+\item Debian
+\item Ubuntu
+\item Fedora
+\item Gentoo
+\end{itemize}
+
+D'aquestes quatre distribucions, les que estan més al dia són Debian i Ubuntu.
+
+\subsection{\textit{Softcores} que suportin \textit{Linux} i \textit{FPGA}s on s'hagin implementat}
+
+Analitzant els requisits de \textit{Linux} anteriorment esmentats, es presenten els principals \textit{softcores} (i els entorns \textit{SoC} al seu voltant) que s'han considerat més adients per la tasca:
+
+\begin{table}[h]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|l|l|}
+\hline
+\multicolumn{1}{|c|}{\textbf{Softcore}} & \multicolumn{1}{c|}{\textbf{Developer}} & \multicolumn{1}{c|}{\textbf{HW "Oficial"}} & \multicolumn{1}{c|}{\textbf{Mitjà de síntesi}} \\ \hline
+\multirow{2}{*}{\textbf{Rocket}} & \multirow{4}{*}{UC Berkeley} & \multirow{4}{*}{\begin{tabular}[c]{@{}l@{}}Artix-7 35T Arty FPGA\\ Xilinx Virtex-7 FPGA VC707\\ Xilinx Virtex UltraScale+ FPGA VCU118\end{tabular}} & \multirow{4}{*}{\begin{tabular}[c]{@{}l@{}}Rocket Chip Generator\\ Chipyard\end{tabular}} \\
+& & & \\ \cline{1-1}
+\multirow{2}{*}{\textbf{BOOM}} & & & \\
+& & & \\ \hline
+\multirow{2}{*}{\textbf{Ariane / CVA6}} & \multirow{2}{*}{ETH-Zurich} & \multirow{2}{*}{\begin{tabular}[c]{@{}l@{}}Digilent Genesys 2\\ Xilinx Vertex 7 – VC707\end{tabular}} & \multirow{2}{*}{\begin{tabular}[c]{@{}l@{}}Projecte de Vivado\\ Chipyard\end{tabular}} \\
+& & & \\ \hline
+\textbf{NOEL-V} & Gaisler & \begin{tabular}[c]{@{}l@{}}Digilent Arty-A7\\ Microsemi PolarFire\\ Xilinx KCU105\end{tabular} & Llibreria d'IP GRLIB \\ \hline
+\end{tabular}%
+}
+\end{table}
+
+Podem veure una marcada tendència cap a les \textit{FPGA} de Xilinx. Per tant, en un futur, i si els altres mètodes no funcionen, potser s'ha d'investigar les plaques Xilinx concretes, trobar una Altera similar i intentar convertir projectes d'una placa a l'altra manualment.\\
+
+Ara bé, com a mínim en una fase inicial, sembla que es podrà evitar, ja que els mitjans de síntesi mostrats haurien de servir.
+Tant Chipyard com RocketChip sembla que generen codi Verilog independent de la \textit{FPGA} de destí, i la llibreria GRLIB de Gaisler suporta diverses plaques Altera/Terasic.\\
+
+Val la pena remarcar, que Rocket i BOOM són pràcticament el mateix \textit{softcore} (com a mínim pel que fa a l'usuari). La diferència fonamental és que BOOM és un processador fora d'ordre (\textit{Berkeley Out-Of-Order Machine}) i Rocket no.
+
+\subsection{Mostra d'imatge per \textit{VGA}}
+
+Ja que aquesta serà una tasca important del sistema, i com a forma de comprovar que la placa funciona amb el PC de desenvolupament, s'ha intentat generar imatges a través de la sortida \textit{VGA} integrada a la placa DE0 de la que es disposa actualment.\\
+
+Partint del software de demostració de la mateixa placa, s'ha pogut obtenir un codi Verilog que genera una imatge \textit{hardcoded} i la representa correctament per pantalla.
+El codi s'ha testejat a diferents resolucions, i si bé totes funcionen i es veuen, el monitor de proves només ha reconegut correctament aquelles on el \textit{timing} és una freqüència entera (aquest comportament es pot atribuir a la incapacitat del PLL de generar freqüències no enteres).\\
+
+En una següent iteració de les proves, estaria bé poder carregar la imatge de memòria o, inclús millor, des de la SD. Tot i així, la utilitat final del codi actual (tal com està actualment) encara està per veure, ja que és molt probable que els \textit{SoC} que se sintetitzin incorporin el seu propi sistema de vídeo.
+
+\section{Objectius i full de ruta actual}
+
+D'acord amb tota la informació exposada, es poden prendre una sèrie de decisions de cara a començar a moure el projecte cap a un terreny més pràctic. Evidentment, aquestes decisions en cap cas són finals, i estan subjectes a les dificultats que puguin sorgir al llarg de l'execució del projecte.
+
+\begin{itemize}
+\item \textbf{Distribució:} seguint l'argument principal de la usabilitat, s'intentarà emprar \textbf{Ubuntu} com distribució objectiu. Si això no fos possible, la següent opció acceptable seria Debian (per proximitat tècnica).
+
+\item \textbf{\textit{Softcore}/\textit{SoC}:} el \textit{softcore} \textbf{NOEL-V} (mitjançant la \textbf{GRLIB} de Gaisler) és el que té un suport explícit per a plaques Altera/Terasic, i per tant sembla l'opció més adequada en primera instància. La següent opció que sembla viable és l'ús de Chipyard per a generar un \textit{SoC} amb qualsevol dels altres 3 \textit{softcores}.
+\end{itemize}
+
+Per tant, en les properes iteracions del projecte, l'objectiu serà començar a treballar segons aquestes eleccions de disseny, si la placa DE0 actual no serveix buscar-ne una que si serveix, i si no es pot seguir amb les decisions preses, replantejar-les.
+
+\newpage
+
+\printbibliography[title={Bibliografia web}]
+
+\end{document}

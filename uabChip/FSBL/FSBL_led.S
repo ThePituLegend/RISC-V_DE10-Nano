@@ -7,10 +7,12 @@
 .section .text.start, "ax", @progbits
 .globl _start
 _start:
-  li s1, LED_VAL_ADDR
-  li s2, LED_BASE
+  li s1, LED_VAL_ADDR // 0x60010020
+  li s2, LED_BASE     // 0x70000000
 
 .LED_LOOP:
-  lb s0, 0(s1) // Read from memory
-  sb s0, 0(s2) // Write to LED
+  lb s0, 0(s1)        // s0 = *(0x60010020)
+  sb s0, 0(s2)        // *(0x70000000) = s0
   j .LED_LOOP
+
+  

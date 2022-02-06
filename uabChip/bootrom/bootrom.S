@@ -21,7 +21,4 @@ _hang:
   li s0, BRAM_BASE
   jr s0
 
-.L1:
-  j .L1 # Shouldn't be necessary, but just in case...
-
 # after poweron, the PC will be set to .text.hang(@0x10040) instead of _start
